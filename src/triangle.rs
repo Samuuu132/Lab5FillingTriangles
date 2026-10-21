@@ -23,6 +23,14 @@ impl Triangle {
     }
 }
 
+pub fn mode_name(mode: TriangleMode) -> &'static str {
+    match mode {
+        TriangleMode::Wireframe => "wireframe",
+        TriangleMode::FilledBarycentric => "barycentric",
+        TriangleMode::FilledScanline => "scanline",
+    }
+}
+
 fn triangle_wireframe(t: &Triangle) -> Vec<Fragment> {
     let mut fragments = Vec::new();
     fragments.extend(line(t.a, t.b, t.color));
@@ -95,8 +103,7 @@ fn triangle_scanline(t: &Triangle) -> Vec<Fragment> {
             }
 
             if yc >= p1.y.min(p2.y) && yc <= p1.y.max(p2.y) {
-                let k = (yc - p1.y) / (p2.y - p1.y);
-                let x = p1.x + k * (p2.x - p1.x);
+                let x = p1.x + (yc - p1.y) * (p2.x - p1.x) / (p2.y - p1.y);
                 left = left.min(x);
                 right = right.max(x);
             }
