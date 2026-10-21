@@ -42,6 +42,9 @@ fn main() {
         if rl.is_key_pressed(KeyboardKey::KEY_ONE) {
             mode = TriangleMode::Wireframe;
         }
+        if rl.is_key_pressed(KeyboardKey::KEY_TWO) {
+            mode = TriangleMode::FilledBarycentric;
+        }
 
         draw_mode(&mut framebuffer, &triangles, mode);
 
