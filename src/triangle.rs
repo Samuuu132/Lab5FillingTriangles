@@ -65,6 +65,58 @@ fn triangle_barycentric(t: &Triangle) -> Vec<Fragment> {
     fragments
 }
 
+fn triangle_scanline(t: &Triangle) -> Vec<Fragment> {
+    let mut fragments = Vec::new();
+
+    if edge(t.a, t.b, t.c) == 0.0 {
+        return fragments;
+    }
+
+    let vertices = [t.a, t.b, t.c];
+
+    let min_y = t.a.y.min(t.b.y).min(t.c.y).floor() as i32;
+    let max_y = t.a.y.max(t.b.y).max(t.c.y).ceil() as i32;
+
+    for y in min_y..=max_y {
+        let yc = y as f32 + 0.5;
+        let mut left = f32::MAX;
+        let mut right = f32::MIN;
+
+        for i in 0..3 {
+            let p1 = vertices[i];
+            let p2 = vertices[(i + 1) % 3];
+
+            if p1.y == p2.y {
+                if yc == p1.y {
+                    left = left.min(p1.x).min(p2.x);
+                    right = right.max(p1.x).max(p2.x);
+                }
+                continue;
+            }
+
+            if yc >= p1.y.min(p2.y) && yc <= p1.y.max(p2.y) {
+                let k = (yc - p1.y) / (p2.y - p1.y);
+                let x = p1.x + k * (p2.x - p1.x);
+                left = left.min(x);
+                right = right.max(x);
+            }
+        }
+
+        if left > right {
+            continue;
+        }
+
+        let x_start = (left - 0.5).ceil() as i32;
+        let x_end = (right - 0.5).floor() as i32;
+
+        for x in x_start..=x_end {
+            fragments.push(Fragment::new(x, y, t.color));
+        }
+    }
+
+    fragments
+}
+
 pub fn rasterize(triangles: &[Triangle], mode: TriangleMode) -> Vec<Fragment> {
     let mut fragments = Vec::new();
 
@@ -72,7 +124,7 @@ pub fn rasterize(triangles: &[Triangle], mode: TriangleMode) -> Vec<Fragment> {
         match mode {
             TriangleMode::Wireframe => fragments.extend(triangle_wireframe(t)),
             TriangleMode::FilledBarycentric => fragments.extend(triangle_barycentric(t)),
-            TriangleMode::FilledScanline => {}
+            TriangleMode::FilledScanline => fragments.extend(triangle_scanline(t)),
         }
     }
 
