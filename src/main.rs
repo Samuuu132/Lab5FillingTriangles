@@ -1,3 +1,4 @@
+mod bench;
 mod cases;
 mod compare;
 mod fragment;
@@ -42,7 +43,7 @@ fn save_images() {
         let scan = rasterize(&case.triangles, TriangleMode::FilledScanline);
         let (only_bary, only_scan) = differences(&bary, &scan);
         println!(
-            "{}: barycentric {} fragmentos, scanline {} fragmentos, solo barycentric {}, solo scanline {}",
+            "{}: baricentrico {} fragmentos, lineas horizontales {} fragmentos, solo baricentrico {}, solo lineas horizontales {}",
             case.name,
             bary.len(),
             scan.len(),
@@ -53,7 +54,20 @@ fn save_images() {
 }
 
 fn main() {
-    if std::env::args().any(|a| a == "--save-images") {
+    let args: Vec<String> = std::env::args().collect();
+
+    if args.iter().any(|a| a == "--benchmark-triangles") {
+        let iterations = args
+            .iter()
+            .position(|a| a == "--iterations")
+            .and_then(|i| args.get(i + 1))
+            .and_then(|n| n.parse().ok())
+            .unwrap_or(100);
+        bench::run_benchmark(iterations);
+        return;
+    }
+
+    if args.iter().any(|a| a == "--save-images") {
         save_images();
         return;
     }

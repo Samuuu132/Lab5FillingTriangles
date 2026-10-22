@@ -44,7 +44,7 @@ mod tests {
     #[test]
     fn collinear_triangle_has_no_fragments() {
         let cases = test_cases();
-        let case = cases.iter().find(|c| c.name == "collinear").unwrap();
+        let case = cases.iter().find(|c| c.name == "colineal").unwrap();
 
         assert!(rasterize(&case.triangles, TriangleMode::FilledBarycentric).is_empty());
         assert!(rasterize(&case.triangles, TriangleMode::FilledScanline).is_empty());

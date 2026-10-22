@@ -25,9 +25,9 @@ impl Triangle {
 
 pub fn mode_name(mode: TriangleMode) -> &'static str {
     match mode {
-        TriangleMode::Wireframe => "wireframe",
-        TriangleMode::FilledBarycentric => "barycentric",
-        TriangleMode::FilledScanline => "scanline",
+        TriangleMode::Wireframe => "contorno",
+        TriangleMode::FilledBarycentric => "baricentrico",
+        TriangleMode::FilledScanline => "lineas_horizontales",
     }
 }
 

@@ -20,7 +20,7 @@ pub fn test_cases() -> Vec<TestCase> {
 
     vec![
         TestCase {
-            name: "small_and_large",
+            name: "pequeno_y_grande",
             triangles: vec![
                 Triangle::new(
                     Vector2::new(40.0, 40.0),
@@ -32,7 +32,7 @@ pub fn test_cases() -> Vec<TestCase> {
             ],
         },
         TestCase {
-            name: "horizontal_and_vertical",
+            name: "horizontal_y_vertical",
             triangles: vec![
                 Triangle::new(
                     Vector2::new(100.0, 100.0),
@@ -49,11 +49,11 @@ pub fn test_cases() -> Vec<TestCase> {
             ],
         },
         TestCase {
-            name: "reversed_order",
+            name: "orden_inverso",
             triangles: vec![Triangle::new(big.c, big.b, big.a, big.color)],
         },
         TestCase {
-            name: "partially_outside",
+            name: "parcialmente_fuera",
             triangles: vec![Triangle::new(
                 Vector2::new(-100.0, 300.0),
                 Vector2::new(300.0, -100.0),
@@ -62,7 +62,7 @@ pub fn test_cases() -> Vec<TestCase> {
             )],
         },
         TestCase {
-            name: "collinear",
+            name: "colineal",
             triangles: vec![Triangle::new(
                 Vector2::new(100.0, 100.0),
                 Vector2::new(300.0, 300.0),
